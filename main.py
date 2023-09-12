@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Response, Form
+from fastapi.responses import StreamingResponse
 from typing import List
 from pydantic import BaseModel
 import json
@@ -27,4 +28,7 @@ async def get_object(name: str = Form(...), placeMarks: str = Form(...)):
         placeMarksKMLs.append(KML.generatePlaceMark(f"{name}_{index}", coordinates))
 
     kml = KML.generateKML(placeMarksKMLs)
-    return Response(content=kml, status_code=200, media_type="application/xml")
+    data_bytes = kml.encode("utf-8")
+    return StreamingResponse(iter([data_bytes]), media_type="application/xml",
+                             headers={"Content-Disposition": f"attachment; filename={name}.kml"})
+    # return Response(content=kml, status_code=200, media_type="application/xml")
