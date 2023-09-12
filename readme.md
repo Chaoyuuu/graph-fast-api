@@ -1,3 +1,5 @@
+# How to run in EC2
+https://www.youtube.com/watch?v=SgSnz7kW-Ko
 
 # Install environment
 ```
